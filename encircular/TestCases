@@ -1,0 +1,20 @@
+Test cases:
+
+Test 1:
+Input
+2
+G
+L
+
+Output
+No
+Yes
+
+
+Test 2: 
+Input:
+1
+GRGL
+
+OUtput:
+NO
