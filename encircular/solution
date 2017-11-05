@@ -5,49 +5,78 @@ import java.math.*;
 import java.util.regex.*;
 
 public class Solution {
-  static String[] doesCircleExist(String[] commands) {
-          int len = commands.length;
-          String[] ans = new String [len];
-          int x = 0;
-          int y = 0;
-          //N0, E1, S2, W3
-          int dir = 0;
-          for (int i = 0; i < commands.length; i++) {
-              String moves = commands[i];
-              if (moves.length() == 1) {
-                  if (moves == "R" || moves =="L") {
-                      ans[i] = "YES";
-                  } else {
-                      ans[i] = "NO";
-                  }
-              } else {   
-                  for (int j = 0; j < moves.length(); j++) {
-                      char move = moves.charAt(j);
-                      if (move == 'R') {
-                          dir = (dir + 1) % 4;
-                      } else if(move == 'L') {
-                          dir = (4 + dir - 1) % 4;
-                      } else if (move == 'G') {
-                          if (dir == 0) {
-                              y++;
-                          } else if (dir == 1) {
-                              x++;
-                          } else if (dir == 2) {
-                              y--;
-                          } else if (dir == 3) {
-                              x--;
-                          }
-                      }
-                  }
-                  if (x == 0 && y == 0) {
-                      ans[i] = "YES";
-                  } else {
-                      ans[i] = "NO";
-                  }
-              }
-          }
-          return ans;
-      }
+      static String[] doesCircleExist(String[] commands) {
+         int len = commands.length;
+         String[] ans = new String [len];
+
+         for (int i = 0; i < commands.length; i++) {
+            String moves = commands[i];
+            ans[i] = does(moves);
+         }
+         return ans;
+    }
+
+
+    static String does (String commands) {
+
+		int initialX = 0;
+		int initialY = 0;
+		
+		int x = 0;
+		int y = 0;
+		String direction = "north";
+		
+		for (int i = 0; i < commands.length(); i++) {
+			
+			if (direction.equals("north")) {
+				if (commands.charAt(i) == 'G') {
+					y++;
+				} else if (commands.charAt(i) == 'L') {
+					direction = "west";
+				} else if (commands.charAt(i) == 'R') {
+					direction = "east";
+				} else {
+					System.out.println("Wrong command");
+				}
+			} else if (direction.equals("east")) {
+				if (commands.charAt(i) == 'G') {
+					x++;
+				} else if (commands.charAt(i) == 'L') {
+					direction = "north";
+				} else if (commands.charAt(i) == 'R') {
+					direction = "south";
+				} else {
+					System.out.println("Wrong command");
+				}
+			} else if (direction.equals("south")) {
+				if (commands.charAt(i) == 'G') {
+					y--;
+				} else if (commands.charAt(i) == 'L') {
+					direction = "east";
+				} else if (commands.charAt(i) == 'R') {
+					direction = "west";
+				} else {
+					System.out.println("Wrong command");
+				}
+			} else if (direction.equals("west")) {
+				if (commands.charAt(i) == 'G') {
+					x--;
+				} else if (commands.charAt(i) == 'L') {
+					direction = "south";
+				} else if (commands.charAt(i) == 'R') {
+					direction = "north";
+				} else {
+					System.out.println("Wrong command");
+				}
+			}
+		}
+		
+		if (direction.equals("north") && (((x-initialX)*(x-initialX) + (y-initialY)*(y-initialY)) > 0)) {
+			return "NO";
+		} else {
+			return "YES";
+		}
+    }
       
   public static void main(String[] args) throws IOException {
         Scanner in = new Scanner(System.in);
