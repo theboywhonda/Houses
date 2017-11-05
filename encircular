@@ -1,0 +1,86 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+public class Solution {
+  static String[] doesCircleExist(String[] commands) {
+          int len = commands.length;
+          String[] ans = new String [len];
+          int x = 0;
+          int y = 0;
+          //N0, E1, S2, W3
+          int dir = 0;
+          for (int i = 0; i < commands.length; i++) {
+              String moves = commands[i];
+              if (moves.length() == 1) {
+                  if (moves == "R" || moves =="L") {
+                      ans[i] = "YES";
+                  } else {
+                      ans[i] = "NO";
+                  }
+              } else {   
+                  for (int j = 0; j < moves.length(); j++) {
+                      char move = moves.charAt(j);
+                      if (move == 'R') {
+                          dir = (dir + 1) % 4;
+                      } else if(move == 'L') {
+                          dir = (4 + dir - 1) % 4;
+                      } else if (move == 'G') {
+                          if (dir == 0) {
+                              y++;
+                          } else if (dir == 1) {
+                              x++;
+                          } else if (dir == 2) {
+                              y--;
+                          } else if (dir == 3) {
+                              x--;
+                          }
+                      }
+                  }
+                  if (x == 0 && y == 0) {
+                      ans[i] = "YES";
+                  } else {
+                      ans[i] = "NO";
+                  }
+              }
+          }
+          return ans;
+      }
+      
+  public static void main(String[] args) throws IOException {
+        Scanner in = new Scanner(System.in);
+        final String fileName = System.getenv("OUTPUT_PATH");
+        BufferedWriter bw = null;
+        if (fileName != null) {
+            bw = new BufferedWriter(new FileWriter(fileName));
+        }
+        else {
+            bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        }
+
+        String[] res;
+        int commands_size = 0;
+        commands_size = Integer.parseInt(in.nextLine().trim());
+
+        String[] commands = new String[commands_size];
+        for(int i = 0; i < commands_size; i++) {
+            String commands_item;
+            try {
+                commands_item = in.nextLine();
+            } catch (Exception e) {
+                commands_item = null;
+            }
+            commands[i] = commands_item;
+        }
+
+        res = doesCircleExist(commands);
+        for(int res_i = 0; res_i < res.length; res_i++) {
+            bw.write(String.valueOf(res[res_i]));
+            bw.newLine();
+        }
+
+        bw.close();
+    }
+}
